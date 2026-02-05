@@ -1,0 +1,142 @@
+# Configuration file for Superconductor DeepSet Model
+# Research Publication Version
+
+# Data Configuration
+data:
+  dataset_path: "data/superconductors_kaggle_ready_v2.csv"
+  composition_column: "element"
+  target_column: "critical_temp_K"
+  renamed_composition: "composition"
+  renamed_target: "Tc"
+  test_compositions_path: "data/test_compositions.txt"
+  
+# Feature Engineering
+features:
+  max_elements: 10
+  max_atomic_number: 96
+  feature_dim: 23  # 22 elemental features + 1 stoichiometry
+  feature_names:
+    - atomic_number
+    - atomic_volume
+    - block_encoded
+    - density
+    - dipole_polarizability
+    - electron_affinity
+    - evaporation_heat
+    - fusion_heat
+    - group_id
+    - lattice_constant
+    - lattice_structure
+    - melting_point
+    - period
+    - specific_heat
+    - thermal_conductivity
+    - vdw_radius
+    - covalent_radius_pyykko
+    - en_pauling
+    - atomic_weight
+    - atomic_radius_rahm
+    - first_ionization_energy
+    - valence_electrons
+    - stoichiometry
+
+# Model Architecture
+model:
+  latent_dim: 300
+  
+  # Phi network (per-element feature extractor)
+  phi_layers:
+    - 992
+    - 768
+    - 512
+    - 384
+    - 256
+    - 128
+    - 300  # latent_dim
+  
+  # Rho network (aggregator)
+  rho_layers:
+    - 960
+    - 832
+    - 768
+    - 640
+    - 512
+    - 384
+    - 256
+    - 192
+    - 160
+    - 128
+    - 96
+    - 64
+    - 1  # output
+
+# Training Configuration
+training:
+  num_runs: 50
+  random_seed_base: 0  # Seeds will be 0, 1, 2, ..., 49
+  
+  # Data splits
+  test_size: 0.20
+  val_size: 0.176  # Of remaining data after test split
+  
+  # Hyperparameters
+  batch_size: 64
+  epochs: 400
+  learning_rate: 0.001
+  optimizer: "adam"
+  loss: "mse"
+  
+  # Callbacks
+  early_stopping:
+    patience: 40
+    monitor: "val_loss"
+    restore_best_weights: true
+  
+  reduce_lr:
+    patience: 15
+    factor: 0.5
+    monitor: "val_loss"
+
+# MLflow Configuration
+mlflow:
+  experiment_name: "deepset_superconductor_50_runs"
+  tracking_uri: null  # Leave null for local tracking
+
+# Evaluation
+evaluation:
+  min_tests_threshold: 10  # Minimum times a material must be tested
+  metrics:
+    - r2_score
+    - mae
+    - rmse
+
+# Ensemble Prediction
+ensemble:
+  num_models: 50  # Use all 50 models
+  confidence_interval: 0.95  # 95% CI = mean ± 1.96*std
+
+# SHAP Analysis
+shap:
+  num_top_models: 5  # Use top 5 models based on test R²
+  num_background_samples: 50
+  num_explain_samples: 100
+  kernel_nsamples: 50
+  clip_percentile: 99.9  # clip extreme SHAP values at this percentile
+  aggregation_method: "median"  # "mean" or "median" (median is more robust)
+
+# Paths
+paths:
+  saved_models_dir: "saved_models"
+  results_dir: "results"
+  figures_dir: "results/figures"
+  logs_dir: "logs"
+  element_features_file: "saved_models/element_features_dict.pkl"
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/superconductor_deepset.log"
+
+# Random seed for reproducibility
+seed: 42

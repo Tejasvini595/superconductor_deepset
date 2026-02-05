@@ -1,0 +1,36 @@
+# Core dependencies for Superconductor DeepSet Model
+# Python 3.8+
+
+# Deep Learning
+tensorflow
+keras
+
+# Data Processing
+pandas
+numpy
+scikit-learn
+
+# Chemistry/Materials
+mendeleev
+
+# Experiment Tracking
+mlflow
+
+# Model Interpretability  
+shap
+
+# Visualization
+matplotlib
+seaborn
+
+# Utilities
+joblib
+pyyaml
+tqdm
+
+# Protocol Buffers
+protobuf
+
+# Optional: For notebook support
+jupyter
+ipykernel
