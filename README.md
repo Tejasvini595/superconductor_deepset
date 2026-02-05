@@ -6,7 +6,9 @@
 
 ## Overview
 
-This repository contains the implementation of a **DeepSet neural network** for predicting the critical temperature (Tc) of superconducting materials based on their chemical composition. The model achieves state-of-the-art performance by leveraging permutation-invariant set representations of elemental features.
+This repository contains the official implementation of **"From Individual Elements to Macroscopic Materials: In Search of New Superconductors via Machine Learning"**.
+
+The code implements a **DeepSet neural network** for predicting the critical temperature (Tc) of superconducting materials based solely on their chemical composition. By explicitly enforcing permutation invariance, the DeepSet architecture avoids artifacts associated with arbitrary element ordering and provides a physically meaningful framework for learning composition–property relationships in superconducting materials.
 
 ### Key Features
 
@@ -75,8 +77,8 @@ superconductor-deepset/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/superconductor-deepset.git
-cd superconductor-deepset
+git clone https://github.com/Tejasvini595/superconductor_deepset.git
+cd superconductor_deepset
 ```
 
 ### 2. Create a virtual environment (recommended)
@@ -203,17 +205,43 @@ The model uses a permutation-invariant architecture suitable for set-structured 
 
 ### Performance Metrics
 
-- **Test RMSE**: ~X.XX K (averaged over 50 runs)
-- **Test R²**: ~0.XXX (averaged over 50 runs)
-- **Test MAE**: ~X.XX K (averaged over 50 runs)
+**SuperCon Test Set (Ensemble-averaged, 14,662 compounds):**
+- **R²**: 0.9170
+- **RMSE**: 10.00 K
 
-### Example Predictions
+**Individual Run (Best performing model):**
+- **R²**: 0.9272
+- **RMSE**: 9.44 K
 
-| Composition | Predicted Tc (K) | Uncertainty (±K) |
-|-------------|------------------|------------------|
-| YBa₂Cu₃O₇   | XX.XX           | ±X.XX            |
-| MgB₂        | XX.XX           | ±X.XX            |
-| Nb₃Sn       | XX.XX           | ±X.XX            |
+**Hosono Validation Dataset (686 materials, independent test):**
+- **R²**: 0.4593
+- **RMSE**: 19.06 K
+
+### Model Architecture
+
+**Encoder (φ-network)**: 992 → 768 → 512 → 384 → 256 → 128 → 300  
+**Decoder (ρ-network)**: 960 → 832 → 768 → 640 → 512 → 384 → 256 → 192 → 160 → 128 → 96 → 64 → 1
+
+### Example Predictions on Recent Superconductors (2017-2024)
+
+| Material | Predicted Tc (K) | Experimental Tc (K) | Year | Pressure |
+|----------|------------------|---------------------|------|----------|
+| YH₉ | 170.4 ± 88.6 | ~170 | 2019 | 150-200 GPa |
+| LaH₁₀ | 161.1 ± 110.8 | ~250 | 2019 | 170-190 GPa |
+| CsV₃Sb₅ | 3.02 ± 1.71 | 2.5-3.0 | 2021 | Ambient |
+| NbTi | 4.85 ± 2.28 | 9.2 | 1962 | Ambient |
+| TaIrTe₄ | 2.08 ± 0.75 | ~2 | 2018 | Ambient |
+
+### SHAP Feature Importance
+
+The model identifies **stoichiometry** as the most influential feature, followed by:
+1. Thermal conductivity
+2. Electron affinity  
+3. Periodic table block
+4. Group number
+5. Valence electron count
+
+These results align with established physical understanding of superconductivity.
 
 ## Configuration
 
@@ -230,11 +258,12 @@ All hyperparameters can be adjusted in `config/config.yaml`:
 If you use this code in your research, please cite:
 
 ```bibtex
-@article{your_paper_2026,
-  title={Predicting Superconductor Critical Temperature using DeepSet Neural Networks},
-  author={Your Name},
-  journal={Journal Name},
-  year={2026}
+@article{superconductor_deepset_2026,
+  title={From Individual Elements to Macroscopic Materials: In Search of New Superconductors via Machine Learning},
+  author={[Your Name Here]},
+  institution={Centre for Computational Natural Sciences and Bioinformatics, International Institute of Information Technology Hyderabad},
+  year={2026},
+  note={arXiv preprint (in preparation)}
 }
 ```
 
@@ -244,15 +273,18 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- SuperCon dataset: [Kaggle](https://www.kaggle.com/)
-- Mendeleev library for elemental properties
+- **Centre for Computational Natural Sciences and Bioinformatics**, International Institute of Information Technology Hyderabad, for providing computational resources and institutional support
+- **SuperCon and NIMS RDF databases** for the superconductor dataset
+- **Hosono validation dataset** for independent testing
+- Open-source software: Python, NumPy, SciPy, scikit-learn, TensorFlow, SHAP, Mendeleev
 - DeepSet architecture: [Zaheer et al., 2017](https://arxiv.org/abs/1703.06114)
+- SHAP interpretability: [Lundberg & Lee, 2017](https://arxiv.org/abs/1705.07874)
 
 ## Contact
 
 For questions or collaborations, please contact:
-- **Email**: your.email@institution.edu
-- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **Institution**: International Institute of Information Technology Hyderabad (IIIT-H)
+- **GitHub**: [https://github.com/Tejasvini595/superconductor_deepset](https://github.com/Tejasvini595/superconductor_deepset)
 
 ## Reproducibility
 
