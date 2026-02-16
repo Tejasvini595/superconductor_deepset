@@ -207,15 +207,17 @@ The model uses a permutation-invariant architecture suitable for set-structured 
 
 **SuperCon Test Set (Ensemble-averaged, 14,662 compounds):**
 - **R²**: 0.9170
-- **RMSE**: 10.00 K
+- **RMSE**: 9.5 K
 
 **Individual Run (Best performing model):**
 - **R²**: 0.9272
 - **RMSE**: 9.44 K
 
-**Hosono Validation Dataset (686 materials, independent test):**
+**Konno et al. Validation Dataset (686 materials, independent test):**
 - **R²**: 0.4593
 - **RMSE**: 19.06 K
+
+*This external validation dataset consists of 686 superconductor candidates predicted by Konno et al.using their deep learning model on 48,000 inorganic materials from the Crystallography Open Database (COD). The candidates were filtered to have predicted Tc > 0 K, excluding cuprates, Fe-based superconductors, and all known SuperCon entries to ensure no data leakage.*
 
 ### Model Architecture
 
