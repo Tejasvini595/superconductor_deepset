@@ -207,7 +207,7 @@ The model uses a permutation-invariant architecture suitable for set-structured 
 
 **SuperCon Test Set (Ensemble-averaged, 14,662 compounds):**
 - **R²**: 0.9170
-- **RMSE**: 9.5 K
+- **RMSE**: 9.95 K
 
 **Individual Run (Best performing model):**
 - **R²**: 0.9272
